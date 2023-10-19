@@ -8,10 +8,17 @@ def main(pagina):
 
     nome_usuario = ft.TextField(label="Escreva seu nome")
 
+    def enviar_mensagem_tunel(mensagem):
+        chat.controls.append(ft.Text(mensagem))        
+        pagina.update()
+
+    pagina.pubsub.subscribe(enviar_mensagem_tunel)
+
     def enviar_mensagem(evento):
-        chat.controls.append(ft.Text(campo_mensagem.value))
+        pagina.pubsub.send_all(campo_mensagem.value)
         campo_mensagem.value = ""
         pagina.update()
+
 
     campo_mensagem = ft.TextField(label="Digite uma mensagem")
     botao_enviar_mensagem = ft.ElevatedButton("Enviar", on_click=enviar_mensagem)
